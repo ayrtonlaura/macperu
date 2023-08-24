@@ -93,6 +93,12 @@ const routes: Routes = [
       .then(mod => mod.AboutModule)
   },
   {
+    path: 'nosotros',
+    loadChildren: () => import('./modules/general/nosotros/nosotros.module')
+      .then(mod => mod.NosotrosModule)
+  }
+  ,
+  {
     path: 'login',
     loadChildren: () => import('./modules/general/login/login.module')
       .then(mod => mod.LoginModule)

@@ -10,7 +10,23 @@
 
         <h3 class="text-white m-3"><a href="#" class="text-white mt-3">Línea de Automatización Neumática</a></h3>
         <p class="text-white text-center align-texto-info">Mac Peru junto a su socio estrategico UNIVER S.P.A. brinda suministros para la automatizacion industrial, con una amplia gama de equipos que se ajustan a nuestros clientes en todas las industrias</p>
-        <a href="#" class="btn btn-banner mt-3 btn-vermas">Ver más <i class="fa-solid fa-paper-plane"></i></a>
+        
+        <p>
+          <a href="#" class="btn btn-banner mt-3 btn-vermas" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Ver más <i class="fa-solid fa-paper-plane"></i></a>
+        </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card ">          
+            
+
+            <div>Some tags before</div>
+            <owl-carousel-o [options]="customOptions" >
+              <ng-template carouselSlide>Slide 1</ng-template>  
+              <ng-template carouselSlide>Slide 2</ng-template>  
+              <ng-template carouselSlide>Slide 3</ng-template>  
+            </owl-carousel-o>
+            <div>Some tags after3</div>
+          </div>
+        </div>
       </div>
 
       <div class="col-md-4 features-grid spacefeat  text-center">

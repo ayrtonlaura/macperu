@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgIf } from '@angular/common';
+
 import { environment } from '../../../../environments/environment';
 import { NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
 
@@ -37,7 +36,7 @@ export class TutorialComponent implements OnInit{
   ];
 
   constructor(@Inject(PLATFORM_ID) private platformId: object, private _config:NgbCarouselConfig) {
-    _config.interval = 5000000;
+    _config.interval = 4000;
     _config.pauseOnHover = true;
     _config.showNavigationArrows = true;
 

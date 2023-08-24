@@ -1,159 +1,87 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { PLATFORM_ID } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 
-import { Quote } from './quote';
+import { NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
 
-import { SeoService } from '../../../services/seo/seo.service';
-import { Feature } from './feature';
-import { Dependency } from './dependency';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { throwError } from 'rxjs';
+
+export interface PhotosApi {
+  albumId?: number;
+  id?: number;
+  title?: string;
+  url?: string;
+  thumbnailUrl?: string;
+}
+
 
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.css']
 })
+
 export class AboutComponent implements OnInit {
 
-  dependencies: Dependency;
-  features: Feature;
-  quote: Quote;
-  id: number;
-
-  constructor(
-    private seoService: SeoService,
-    @Inject(PLATFORM_ID) private platformId: object) {
-
-    const content = 'About content with meta';
-    this.seoService.setMetaDescription(content);
-
-    this.id = 0;
-    this.quote = new Quote();
-    this.dependencies = {
-      frontend: [
-        { name: 'Angular 16.2.1' },
-        { name: 'Angular CLI 16.2.0' },
-        { name: 'Angular Universal 16.2.0' },
-        { name: 'Bootstrap 5.3.1' },
-        { name: 'Font Awesome 6.4.2' },
-      ],
-      backend: [
-        { name: 'Node.js 18.16.0' },
-        { name: 'Express 4.18.2' },
-        { name: 'pg-promise 10.10.2' },
-      ]
-    };
-
-    this.features = {
-      frontend: [
-        {
-          name: 'Angular CLI',
-          englishTutorial: 'https://www.ganatan.com/tutorials/getting-started-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/demarrer-avec-angular',
-        },
-        {
-          name: 'Routing',
-          englishTutorial: 'https://www.ganatan.com/tutorials/routing-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/routing-avec-angular',
-        },
-        {
-          name: 'Lazy loading',
-          englishTutorial: 'https://www.ganatan.com/tutorials/lazy-loading-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/lazy-loading-avec-angular',
-        },
-        {
-          name: 'Bootstrap',
-          englishTutorial: 'https://www.ganatan.com/tutorials/bootstrap-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/bootstrap-avec-angular',
-        },
-        {
-          name: 'Server side Rendering',
-          englishTutorial: 'https://www.ganatan.com/tutorials/server-side-rendering-with-angular-universal',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/server-side-rendering-avec-angular-universal',
-        },
-        {
-          name: 'HTTPClient',
-          englishTutorial: 'https://www.ganatan.com/tutorials/httpclient-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/httpclient-avec-angular',
-        },
-        {
-          name: 'Transfer State',
-          englishTutorial: 'https://www.ganatan.com/tutorials/transfer-state-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/transfer-state-avec-angular',
-        },
-        {
-          name: 'Progressive Web App',
-          englishTutorial: 'https://www.ganatan.com/tutorials/progressive-web-app-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/progressive-web-app-avec-angular',
-        },
-        {
-          name: 'Search Engine optimization',
-          englishTutorial: 'https://www.ganatan.com/tutorials/search-engine-optimization-with-angular',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/search-engine-optimization-avec-angular',
-        },
-        {
-          name: 'Components',
-          englishTutorial: '',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/components-avec-angular',
-        },
-        {
-          name: 'Services',
-          englishTutorial: '',
-          frenchTutorial: 'https://www.ganatan.com/tutorials/services-avec-angular',
-        },
-      ],
-      backend: [
-        { name: 'Local JSON' },
-        { name: 'RESTFull API' },
-        { name: 'CRUD API' },
-        { name: 'Database Creation' },
-        { name: 'Data Import' },
-        { name: 'Data Export' },
-      ]
-    };
-
-  }
-
-  ngOnInit(): void {
-    this.loadQuote();
-
-    const content =
-      'Cette application a été développée avec Angular version 16.1.7 et bootstrap 5.3.1' +
-      ' Elle applique le Routing, le Lazy loading, le Server side rendering et les Progressive Web App (PWA)';
-
-    const title = 'angular-starter Title : About Page';
-
-    this.seoService.setMetaDescription(content);
-    this.seoService.setMetaTitle(title);
-
-  }
-
-
-  loadQuote() {
-    const quotes = [
-      {
-        name: 'Lawrence of Arabia',
-        title: 'There is nothing in the desert and no man needs nothing',
-        link: 'https://en.wikipedia.org/wiki/Lawrence_of_Arabia_(film)'
+  
+  
+  limit: number = 10; // <==== Edit this number to limit API results
+  customOptions: OwlOptions = {
+    loop: true,
+    autoplay: true,
+    center: true,
+    dots: false,
+    autoHeight: true,
+    autoWidth: true,
+    responsive: {
+      0: {
+        items: 1,
       },
-      {
-        name: 'Alien Prometheus',
-        title: 'Big things have small beginnings',
-        link: 'https://en.wikipedia.org/wiki/Prometheus_(2012_film)'
+      600: {
+        items: 1,
       },
-      {
-        name: 'Blade Runner',
-        title: 'All those moments will be lost in time... like tears in rain... Time to die.',
-        link: 'https://en.wikipedia.org/wiki/Blade_Runner'
-      },
-    ];
-    const index = quotes.length;
-    let id = this.id;
-    while (this.id === id) {
-      id = Math.floor(Math.random() * index);
+      1000: {
+        items: 1,
+      }
     }
-    this.id = id;
-    this.quote = quotes[id];
   }
+  
+  peliculas:any[]=[
+    {name:'',
+    img:'https://eicepak.com/wp-content/uploads/2015/11/marca_11.png',
+    desc:''},
+    {
+      name:'',
+      img:'https://eicepak.com/wp-content/uploads/2015/11/marca_02.png',
+      desc:''
+    },
+    {
+      name:'',
+      img:'https://eicepak.com/wp-content/uploads/2015/11/marca_07.png',
+      desc:''
+    }
+    
+  ];
+
+  constructor(private _config:NgbCarouselConfig, private readonly http: HttpClient) {
+
+    _config.interval = 400000;
+    _config.pauseOnHover = true;
+    _config.showNavigationArrows = true;
+  }
+  ngOnInit(): void {
+    this.fetch()
+  }
+
+  fetch() {
+    const api = `https://jsonplaceholder.typicode.com/albums/1/photos?_start=0&_limit=${this.limit}`;
+    const http$ = this.http.get<PhotosApi>(api);
+
+  
+  }
+
+
+
 
 }
 

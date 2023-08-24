@@ -1,0 +1,22 @@
+.nosotros-component h2{
+  color: #024993;
+}
+.nosotros-sec{
+  display: flex;
+  color: #024993;
+}
+
+
+
+@media (max-width: 992px) {
+  .nosotros-sec{
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .img-responsive{
+    max-width: 300px;
+  }
+}

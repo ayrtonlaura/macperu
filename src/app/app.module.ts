@@ -11,9 +11,8 @@ import { NotFoundComponent } from './modules/general/not-found/not-found.compone
 
 import { HeaderModule } from './components/header/header.module';
 import { FooterModule } from './components/footer/footer.module';
-import { CarouselModule } from './modules/application/carousel/carousel.module';
 import { NgbPaginationModule, NgbAlertModule, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
-import { AboutComponent } from './modules/general/about/about.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +32,6 @@ import { AboutComponent } from './modules/general/about/about.component';
     HttpClientModule,
     HeaderModule,
     FooterModule,
-    CarouselModule,
     NgbCarouselModule,
   ],
   exports:[
